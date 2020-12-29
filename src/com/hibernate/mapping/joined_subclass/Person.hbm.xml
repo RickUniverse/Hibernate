@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.joined_subclass">
+
+    <class name="Person" table="person_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="PERSON_ID"></column>
+            <generator class="native"></generator>
+        </id>
+
+
+        <property name="age" type="int" column="AGE"/>
+        <property name="name" type="java.lang.String" column="NAME"/>
+
+        <joined-subclass name="Student" table="student_table">
+            <key>
+                <column name="STUDENT_ID"/>
+            </key>
+            <property name="school" type="string" column="SCHOOL"></property>
+        </joined-subclass>
+
+    </class>
+</hibernate-mapping>

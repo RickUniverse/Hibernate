@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.many_to_one_to_many">
+
+    <class name="Customer" table="customer_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="customer_id"/>
+            <generator class="native"></generator>
+        </id>
+        <property name="name" type="string"></property>
+
+        <!--
+        双向一对多,映射1 这一端的set集合
+        inverse="true" 表示由那一端维护关联关系，true表示多的那一段维护
+            有利于提升性能，减少update语句
+
+        table="order_table" 表示多那一端的表
+        column="customer_id" 多那一端关联的列
+
+        开发时不建议使用：cascade="delete" 级联删除，在调用session.delete时会将 1 和 n这两端都删除
+            cascade="delete-orphan"  在清空持久化对象的多这一端的集合后会将数据库中的进行删除
+            cascade="save-update" 级联保存，添加的时候，不需要额外写保存多这一端的session.save语句
+
+         order-by="order_Id DESC" 对元素进行排序
+        -->
+        <set name="orders" table="order_table" inverse="true" order-by="order_Id DESC">
+            <key column="customer_id"></key>
+            <one-to-many class="Order"/>
+        </set>
+    </class>
+</hibernate-mapping>

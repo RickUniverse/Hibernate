@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.many_to_many">
+
+    <class name="Item" table="item_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="ITEM_ID"></column>
+            <generator class="native"></generator>
+        </id>
+        <property name="name" type="java.lang.String" column="ITEM_NAME"/>
+
+        <!--
+            双向多对多需要让双方的 key的column和many-to-many的column的键交叉相同
+            inverse="true" 并且只能由一方维护关系，否则会出现错误
+        -->
+        <set name="categories" table="CATEGORYS_ITEMS" inverse="true">
+            <key>
+                <column name="I_ID"/>
+            </key>
+            <many-to-many class="Category" column="C_ID"/>
+        </set>
+    </class>
+</hibernate-mapping>

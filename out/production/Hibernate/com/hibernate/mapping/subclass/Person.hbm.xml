@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.subclass">
+
+    <class name="Person" table="person_table" schema="hibernate5" discriminator-value="PERSON" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="PERSON_ID"></column>
+            <generator class="native"></generator>
+        </id>
+
+        <!--
+        设置辨别者列
+        -->
+        <discriminator type="string" column="TYPE"/>
+
+        <property name="age" type="int" column="AGE"/>
+        <property name="name" type="java.lang.String" column="NAME"/>
+
+        <!--
+            映射子类使用subclass进行映射
+        -->
+        <subclass name="Student" discriminator-value="STUDENT">
+            <property name="school" type="string" column="SCHOOL"/>
+        </subclass>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.union_subclass">
+
+    <class name="Person" table="person_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="PERSON_ID"></column>
+<!--            <generator class="seqhilo"></generator>-->
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <!--   sequence的名字，默认是"hibernate_sequence"   -->
+                <param name="sequence_name">hibernate_sequence</param>
+            </generator>
+        </id>
+
+        <property name="age" type="int" column="AGE"/>
+        <property name="name" type="java.lang.String" column="NAME"/>
+
+        <union-subclass name="Student" table="STUDENTS">
+            <property name="school" type="string" column="SCHOOL"/>
+        </union-subclass>
+    </class>
+</hibernate-mapping>

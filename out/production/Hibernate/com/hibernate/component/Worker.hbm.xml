@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.component">
+
+    <class name="Worker" table="workers" schema="hibernate5">
+        <id name="id" type="int" >
+            <column name="id"/>
+            <generator class="native"></generator>
+        </id>
+        <property name="name" type="string">
+            <column name="NAME"/>
+        </property>
+
+        <component name="pay" class="Pay">
+            
+            <!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <!--属于谁-->
+            <parent name="worker"/>
+            
+            
+            <!--指定组成关系组件的属性-->
+            <property name="yearPay" column="YEARPLAY" type="double"/>
+        </component>
+    </class>
+</hibernate-mapping>

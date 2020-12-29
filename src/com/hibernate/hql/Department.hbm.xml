@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.hql">
+
+    <class name="Department" table="department_table" schema="myoracle2" dynamic-update="true">
+
+        <!--二级缓存，类级别-->
+        <cache usage="read-write"/>
+
+        <id name="id" type="int">
+            <column name="ID"></column>
+            <generator class="native"></generator>
+        </id>
+
+        <property name="name" type="java.lang.String" column="NAME"/>
+
+        <!--
+            batch-size="10" 管用。。。。
+        -->
+        <set name="emps" table="employee_table" inverse="true" batch-size="10" lazy="true">
+
+            <!--
+                二级缓存，集合级别
+                Employee 的类级别缓存需要加上
+            -->
+            <cache usage="read-write"/>
+
+            <!--key外键-->
+            <key>
+                <column name="DEPT_ID"/>
+            </key>
+            <one-to-many class="Employee"/>
+        </set>
+    </class>
+</hibernate-mapping>

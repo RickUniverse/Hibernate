@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.one_to_one">
+
+    <class name="Manager" table="manager_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="java.lang.Integer">
+            <column name="MANAGER_ID" ></column>
+            <generator class="native"></generator>
+        </id>
+
+        <property name="name" type="java.lang.String" column="MANAGER_NAME"/>
+
+        <!--
+            因为department已经使用了外键
+            则manager持久化类需要使用one-to-one
+            property-ref="manager" 没有外键的一端需要使用使用该属性，指定关联实体
+                主键以外的字段作为关联字段，没有外键的一端必须写该属性
+        -->
+        <one-to-one name="department" class="Department" property-ref="manager" />
+        
+    </class>
+</hibernate-mapping>

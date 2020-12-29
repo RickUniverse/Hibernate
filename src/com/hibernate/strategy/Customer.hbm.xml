@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.strategy">
+
+    <!--
+        lazy="true" 类级别的延迟检索
+        batch-size="5" :　在many-to-one的时候，这个表示加载many这一端的时候，一次性初始化集合
+                          one这一端的代理对象的个数
+    -->
+    <class name="Customer" table="customer_table"
+           lazy="true"
+           batch-size="5"
+           schema="hibernate5" dynamic-update="true">
+        <id name="id" type="int">
+            <column name="customer_id"/>
+            <generator class="native"></generator>
+        </id>
+        <property name="name" type="string"></property>
+
+        <!--
+        双向一对多,映射1 这一端的set集合
+        inverse="true" 表示由那一端维护关联关系，true表示多的那一段维护
+            有利于提升性能，减少update语句
+
+        table="order_table" 表示多那一端的表
+        column="customer_id" 多那一端关联的列
+
+        开发时不建议使用：cascade="delete" 级联删除，在调用session.delete时会将 1 和 n这两端都删除
+            cascade="delete-orphan"  在清空持久化对象的多这一端的集合后会将数据库中的进行删除
+            cascade="save-update" 级联保存，添加的时候，不需要额外写保存多这一端的session.save语句
+
+         order-by="order_Id DESC" 对元素进行排序
+
+
+         lazy="extra"  set 的检索策略
+                extra 增强型延迟检索，会尽可能延迟初始化order项,表示将尽可能的延迟检索集合时的初始化赋值
+                true  表示启用延迟检索
+                false  立即将集合项初始化
+
+
+          batch-size="4"  很有用，表示一次性加载几条数据，能有效减少sql语句
+                    因为会使用  in 关键字，所以效率会提交
+
+          fetch="subselect"： 决定初始化orders集合的方式
+                 当取值为subselect的时候，将使用子查询直接将所有项 按照customer_id 直接全部查出来
+                            设置为苏北subselect，会忽略掉 batch-size 这个属性
+                 取值为join：决定被初始化的时机
+                            检索customer时会采用迫切左外连接
+                            lazy属性会被忽略
+                            Query的list() 方法会忽略映射文件中配置的迫切左外连接检查策略，而依旧采用延迟加载策略
+                            HQL查询忽略 fetch=join的取值
+
+        -->
+        <set name="orders" table="order_table"
+             inverse="true" order-by="order_Id DESC"
+             lazy="true"
+             batch-size="4" fetch="join">
+            <key column="customer_id"></key>
+            <one-to-many class="Order"/>
+        </set>
+    </class>
+</hibernate-mapping>

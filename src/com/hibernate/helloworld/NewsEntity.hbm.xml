@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.hibernate.helloworld.NewsEntity" table="news" schema="hibernate5">
+        <id name="id" column="id">
+            <!--指定主键的生成方式，native：数据库本地生成-->
+            <generator class="native"></generator>
+        </id>
+        <property name="title" column="title" type="java.lang.String"/>
+        <property name="author" column="author" type="java.lang.String"/>
+        <property name="date" column="date" type="java.sql.Date"/>
+    </class>
+</hibernate-mapping>

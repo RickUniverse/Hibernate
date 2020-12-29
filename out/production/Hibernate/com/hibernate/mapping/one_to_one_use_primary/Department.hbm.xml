@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.one_to_one_use_primary">
+
+    <class name="Department" table="department_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="java.lang.Integer">
+            <column name="DEPARTMENT_ID" ></column>
+            <!--
+                主键生成使用foreign，表示根据manage的主键值作为自己的主键
+            -->
+            <generator class="foreign">
+                <!--
+                    property 属性指定使用当前持久化类的哪一个持久化类的主键作为 当前持久化类的主键
+                -->
+                <param name="property">manager</param>
+            </generator>
+        </id>
+
+        <property name="name" type="java.lang.String" column="DEPARTMENT_NAME"/>
+
+        <!--
+            需要配置one-to-one
+            constrained="true" 采用foreig的一端，需要增加该属性。为了生成外键。。
+        -->
+        <one-to-one name="manager" class="Manager" constrained="true"></one-to-one>
+    </class>
+</hibernate-mapping>

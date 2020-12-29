@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.mapping.one_to_one">
+
+    <class name="Department" table="department_table" schema="hibernate5" dynamic-update="true">
+        <id name="id" type="java.lang.Integer">
+            <column name="DEPARTMENT_ID" ></column>
+            <generator class="native"></generator>
+        </id>
+
+        <property name="name" type="java.lang.String" column="DEPARTMENT_NAME"/>
+
+        <!--
+            使用外键约束实现 1 对 1 的关系映射
+            需要使用unique 实现一对一的唯一性
+        -->
+        <many-to-one name="manager" class="Manager" column="MANAGER_ID" unique="true"/>
+    </class>
+</hibernate-mapping>

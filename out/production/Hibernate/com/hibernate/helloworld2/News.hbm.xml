@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.hibernate.helloworld2">
+
+    <!--dynamic-update="true" 动态更新 只有当跟数据库中数据不一致时发送update请求-->
+    <class name="News" table="news" schema="hibernate5" dynamic-update="true">
+        <!--unsaved-value="any" :是否认定为游离对象-->
+        <id name="id" column="id" >
+            <!--指定主键的生成方式，native：数据库本地生成-->
+            <generator class="native"></generator>
+        </id>
+
+        <!--
+        unique="true" 唯一约束
+        update="false" 该字段值不能被更改
+        index="news_index" 添加索引
+        length="20" 数据库类型长度
+        formula="" 派生属性
+        -->
+        <property name="title" column="title" type="java.lang.String"
+            unique="true" update="false" index="news_index" length="20"
+        />
+        <property name="author" column="author" type="java.lang.String"/>
+        <property name="date" column="date" type="java.sql.Date"/>
+        <!--
+        时间映射：date类型表示日期，time表示时间，timestamp类型表示时间戳，同时包含日期和时间信息
+        <property name="date" column="date" type="timestamp"/>
+        <property name="date" column="date" type="time"/>
+        <property name="date" column="date" type="date"/>
+        -->
+        <property name="desc"
+        formula="(select concat(title,':',author) from news as n where n.id = id)"/>
+
+        <!--
+        精确映射使用sql-type属性
+        -->
+    </class>
+</hibernate-mapping>
